@@ -11,6 +11,7 @@ class ScrollFrame(tk.Frame):
 
         self.vsb.pack(side="right", fill="y")                                       #pack scrollbar to right of self
         self.canvas.pack(side="left", fill="both", expand=True)                     #pack canvas to left of self and expand to fil
+        
         self.canvas.create_window((0,0), window=self.viewPort, anchor="nw",            #add view port frame to canvas
                                   tags="self.viewPort")
 
@@ -31,3 +32,5 @@ class ScrollFrame(tk.Frame):
     def onFrameConfigure(self, event):                                              
         '''Reset the scroll region to encompass the inner frame'''
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))    
+        self.viewPort.pack(fill = 'both')
+

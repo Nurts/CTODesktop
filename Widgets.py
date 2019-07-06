@@ -1,5 +1,49 @@
 import tkinter as tk
+
+# Checkbox
+class Checkbox(tk.Frame):
+
+    def onEnter(self, event):
+        self.button.configure(bg = 'gray76')
+        
+    def onLeave(self, event):
+        self.button.configure(bg = self["background"])
+
+    def changeState(self):
+        self.state = not self.state
+
+        if self.state:
+            self.button.configure(image = self.on_img)
+        else:
+            self.button.configure(image = self.off_img)
+
+    def __init__(self, text, parent, on_img, off_img, changeable = True, **kwargs):
+        self.state = False
+        self.on_img = on_img
+        self.off_img = off_img
+        tk.Frame.__init__(self, parent, kwargs)
+
+        if not changeable:
+            self.configure(bg = 'pale green')
+            
+       
+        
+
+        self.text = tk.Label(self, text = text, bg = self["background"], anchor='w')
+        self.text.pack(side = tk.LEFT, expand = True, fill = tk.X)
+
+        self.button = tk.Button(self,  relief = tk.FLAT, bg = self["background"], command = self.changeState, image = off_img)
+        self.button.pack(side = tk.RIGHT)
+
+        if not changeable:
+            self.button.configure(state = tk.DISABLED)
+        else:
+            self.button.bind("<Enter>", self.onEnter)
+            self.button.bind("<Leave>", self.onLeave)
+        
+    
 # Entry with placeholder
+
 class PlaceholderEntry(tk.Entry):
     def foc_in(self, event):
         if self.get() == self.placeholder :
