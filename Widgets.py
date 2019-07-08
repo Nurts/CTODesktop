@@ -1,6 +1,22 @@
 import tkinter as tk
 
 # Checkbox
+class Remarks(tk.Frame):
+    def __init__(self, parent, text, **kwargs):
+        tk.Frame.__init__(self, parent, kwargs)
+        self.label = tk.Label(self, text = text, font = 'Helvetica 10 bold', bg = self["background"], anchor='ne')
+        self.label.pack(side = tk.LEFT, expand = True, fill = tk.Y)
+
+        
+        self.scroll = tk.Scrollbar(self)
+        self.text = tk.Text(self, height = 3, relief = tk.RAISED)
+        self.scroll.pack(side = tk.RIGHT, fill = tk.Y)
+        self.text.pack(side = tk.LEFT, fill = tk.BOTH)
+        self.scroll.config(command = self.text.yview)
+        self.text.config(yscrollcommand = self.scroll.set)
+
+        
+
 class Checkbox(tk.Frame):
 
     def onEnter(self, event):
