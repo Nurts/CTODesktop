@@ -1,5 +1,62 @@
 import tkinter as tk
 
+class ButtonWithFocus(tk.Button):
+    def onEnter(self, event):
+        self.configure(bg = 'gray76')
+        
+    def onLeave(self, event):
+        self.configure(bg = self.background)
+
+    def __init__(self, parent, **kwargs):
+        tk.Button.__init__(self, parent, kwargs)
+        self.background = self["background"]
+
+        self.bind("<Enter>", self.onEnter)
+        self.bind("<Leave>", self.onLeave)
+
+        
+
+
+class Radiobuttons(tk.Frame):
+
+    def __init__(self, parent, **kwargs):
+        tk.Frame.__init__(self, parent, kwargs)
+        self.value = tk.IntVar()
+    
+    def add(self, labels = []):
+        for i in range(len(labels)):
+            widget = tk.Radiobutton(self, text = labels[i], variable = self.value, value = i)
+            widget.pack(side = tk.LEFT)
+
+
+
+class RawFrame(tk.Frame):
+
+    def __init__(self, parent, **kwargs):
+        tk.Frame.__init__(self, parent, kwargs)
+    
+    def add(self, labels = [], entry_width = []):
+        for i in range(len(labels)):
+            widget = None
+            if(labels[i] == "Blank"):
+                widget = tk.Label(self, text = "", width = entry_width[i])
+            else:
+                widget = LabelEntry(self, labels[i], entry_width[i])
+                
+            widget.pack(side = tk.LEFT, fill = tk.X, expand = True)
+
+class LabelEntry(tk.Frame):
+
+    def __init__(self, parent, text, entry_width = 10, **kwargs):
+        tk.Frame.__init__(self, parent, kwargs)
+        self.label = tk.Label(self, text = text, font = 'Helvetica 10', bg  = self["background"], anchor = 'w')
+        self.label.pack(side = tk.LEFT, expand = False, fill = tk.Y)
+
+        self.entry = tk.Entry(self, width = entry_width, relief = tk.RAISED)
+        self.entry.pack(side = tk.LEFT, expand = True)
+
+
+
 # Checkbox
 class Remarks(tk.Frame):
     def __init__(self, parent, text, **kwargs):
@@ -9,7 +66,7 @@ class Remarks(tk.Frame):
 
         
         self.scroll = tk.Scrollbar(self)
-        self.text = tk.Text(self, height = 3, relief = tk.RAISED)
+        self.text = tk.Text(self, height = 3, relief = tk.RAISED, width = 100)
         self.scroll.pack(side = tk.RIGHT, fill = tk.Y)
         self.text.pack(side = tk.LEFT, fill = tk.BOTH)
         self.scroll.config(command = self.text.yview)
@@ -34,10 +91,10 @@ class Checkbox(tk.Frame):
             self.button.configure(image = self.off_img)
 
     def __init__(self, text, parent, on_img, off_img, changeable = True, **kwargs):
-        self.state = False
+        self.state = True
         self.on_img = on_img
         self.off_img = off_img
-        tk.Frame.__init__(self, parent, kwargs)
+        tk.Frame.__init__(self, parent, kwargs, relief = tk.GROOVE)
 
         if not changeable:
             self.configure(bg = 'pale green')
@@ -48,7 +105,7 @@ class Checkbox(tk.Frame):
         self.text = tk.Label(self, text = text, bg = self["background"], anchor='w')
         self.text.pack(side = tk.LEFT, expand = True, fill = tk.X)
 
-        self.button = tk.Button(self,  relief = tk.FLAT, bg = self["background"], command = self.changeState, image = off_img)
+        self.button = tk.Button(self,  relief = tk.FLAT, bg = self["background"], command = self.changeState, image = on_img)
         self.button.pack(side = tk.RIGHT)
 
         if not changeable:
